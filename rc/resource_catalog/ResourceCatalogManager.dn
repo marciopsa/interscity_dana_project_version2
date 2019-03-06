@@ -99,7 +99,7 @@ data InterSCityData {
 	ResourceMetaData data_
 }
 
-component provides ResourceCatalogManager requires io.Output out, data.StringUtil strUtil, data.IntUtil intUtil,
+component provides resource_catalog.ResourceCatalogManager requires io.Output out, data.StringUtil strUtil, data.IntUtil intUtil,
 										data.json.JSONEncoder encoder, data.adt.HashTable {
 
 	HashTable resourceMetaData_hashtable = new HashTable()
