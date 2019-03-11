@@ -1,7 +1,7 @@
 // Learning
 //
 // This component implements the Learning module.
-// 
+//
 // Author: Roberto Rodrigues Filho
 // March @ 2017
 
@@ -18,8 +18,8 @@ const char STARTEXPLORING[] 	= "start_exploring"
 const char EXPLORATION[] 		= "exploration"
 const char EXPLOITATION[] 		= "exploitation"
 
-component provides learning.Learning requires io.Output out, data.IntUtil iu, time.Timer t, 
-	learning.LearningCore, rest.RESys, data.StringUtil strUtil, io.File, 
+component provides learning.Learning requires io.Output out, data.IntUtil iu, time.Timer t,
+	learning.LearningCore, rest.RESys, data.StringUtil strUtil, io.File,
 	data.json.JSONParser parser, data.DecUtil du, io.Input in {
 
 	// external modules
@@ -137,7 +137,7 @@ component provides learning.Learning requires io.Output out, data.IntUtil iu, ti
 		out.println("$(debugMSG) starting learning...")
 		// learning cycle ...
 		while (mode != EXIT) {
-			if ((mode == EXPLORATION) || (mode == STARTEXPLORING)) { 
+			if ((mode == EXPLORATION) || (mode == STARTEXPLORING)) {
 				char config[] = getConfig()
 				//writeToFile(new char[]("Arch: ", config))
 				sys.setConfig(config)
@@ -171,7 +171,7 @@ component provides learning.Learning requires io.Output out, data.IntUtil iu, ti
 
 	void writeToFile(char someText[]) {
 		//out.println("$(someText)")
-		File fd = new File("result1.data", File.FILE_ACCESS_WRITE)
+		File fd = new File("result189.data", File.FILE_ACCESS_WRITE)
         fd.setPos(fd.getSize())
         fd.write(someText)
         fd.write("\n")
