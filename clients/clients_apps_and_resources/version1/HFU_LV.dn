@@ -125,7 +125,8 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 
 		/* --------------TRIGGERING REQUESTS-------------- */
 		out.println(new char[]("$(debugMSG) Starting requests... "))
-		Thread startThread = asynch::start(jsonBus_DataToBeSent, formatedResponse.uuid)
+		//Thread startThread = asynch::start(jsonBus_DataToBeSent, formatedResponse.uuid)
+		Thread startThread = asynch::start(jsonBus_DataToBeSent, "1")
 		out.println("Press enter to finish...")
 		in.readln()
 		flag = false
