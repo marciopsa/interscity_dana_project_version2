@@ -104,7 +104,7 @@ component provides learning.Learning requires io.Output out, data.IntUtil iu, ti
 
 	// should return only the exp!
 	char[] getProxyExp() {
-		return new char[]("|../pal/monitoring/proxies/DCProxy.o|*(*:Web[0]:*)|")
+		return new char[]("|../pal2/monitoring/proxies/RCProxy.o|*(*:Web[0]:*)|")
 	}
 
 	// WARNING: if this is on the exploration phase and you keep calling this function it will cycle forever...

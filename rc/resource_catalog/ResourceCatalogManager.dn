@@ -144,14 +144,14 @@ component provides resource_catalog.ResourceCatalogManager requires io.Output ou
 
 			storedResource = hashTableItems[i].value//resourceMetaData_hashtable.get(i)
 			out.println("storedResource.data_.description nº: $(intUtil.intToString(i)), valor(description): $(storedResource.data_.description)")
-		}
+		}*/
 
 
 
 		//Composing response message to Resource Adaptor Microservice
 		ResponseToResource r = new ResponseToResource()
 		r.response = "success"
-		r.uuid = created_id_str//selected_resource_uuid
+		r.uuid = created_id//_str//selected_resource_uuid
 		r.device = ""
 		r.description = bus.data_.description
 		r.capabilities = new String[bus.data_.capabilities.arrayLength]
@@ -168,10 +168,10 @@ component provides resource_catalog.ResourceCatalogManager requires io.Output ou
 		r.postal_code = null												// getPostalCode()
 		r.created_at = "2018-05-07T01:25:49.939Z"		// getCreatedAt()
 		r.updated_at = "2018-05-07T01:25:49.939Z"		// getUpdatedAt()
-		r.id = created_id
+		r.id = 0//created_id
 
 		out.println("Sending response to Resource Adaptor...")
-		s.write(encoder.jsonFromData(r, null)) */
+		s.write(encoder.jsonFromData(r, null))
 	}
 
 
