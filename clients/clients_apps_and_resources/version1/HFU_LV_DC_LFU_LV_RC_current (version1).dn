@@ -1,7 +1,8 @@
-/* HFU_LV_DC_LFU_LV_RC_current.dn
+/* LFU_LV_EmergentRC.dn
  *
  * High frequency of updates, low volume of data client using both Data Collector and Resource Catalog emergently.
- * Some codes are copied from Roberto Rodrigues
+ * Copied some codes from Roberto (:
+ * PS: requests are always *constantly* (no intervals) being cast.
  *
  * Author: Marcio Pereira de Sá - March @ 2019
  */
