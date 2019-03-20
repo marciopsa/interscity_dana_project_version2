@@ -60,6 +60,12 @@ component provides ResourceAdaptorManager requires net.http.HTTPRequest request,
 	int local_id_usedOnResourceAdaptor = 1  // Local ID used on Resource Adaptor.
 
 	void ResourceAdaptorManager:sendData(byte content[], char id[], DocStream docStream) {
+		char url[] = "http://localhost:2020/collector/data/$(id)"
+		Header headers[] = null
+		HTTPResponse response = request.post(url, null, content)
+	}
+
+	/* void ResourceAdaptorManager:sendData(byte content[], char id[], DocStream docStream) {
 		numberOfSingleMessagesReceived++
 
 		char url[] = "http://localhost:2020/collector/data/$(id)"
@@ -76,7 +82,7 @@ component provides ResourceAdaptorManager requires net.http.HTTPRequest request,
 
 
 
-	}
+	} */
 
 
 	/* Registering metadata on Resource Catalog */

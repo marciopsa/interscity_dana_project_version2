@@ -1,15 +1,38 @@
-/* NFRProxy.dn 
+/* NFRProxy.dn
  *
- * Author: Roberto Rodrigues Filho - Sept @ 2018
+ * Some codes are copied from Roberto Rodrigues
+ *
+ * Author: Marcio Pereira de Sá - March @ 2019
  */
 component provides ws.Web requires io.Output out, ws.Web:nfrp web {
+	const int MAX_NUM_OF_RECEIVED_MESSAGES_ALLOWED = 10
+
+	byte accumulatedMessages_response[][]
+
+	int num_of_received_messages = 0
 
 	bool Web:get(char path[], DocStream stream, HashTable params) {
 		return web.get(path, stream, params)
 	}
 
 	bool Web:post(char path[], char contentType[], byte content[], DocStream stream, HashTable params) {
-		return web.post(path, contentType, content, stream, params)
+		//return web.post(path, contentType, content, stream, params)
+
+
+
+		bool result
+		if (num_of_received_messages >= MAX_NUM_OF_RECEIVED_MESSAGES_ALLOWED) {
+			//stream.write(accumulatedMessages_response)
+			result = web.post(path, contentType, accumulatedMessages_response, stream, params)
+			num_of_receive_messages = 0
+			return true
+		}
+
+
+		accumulatedMessages_response[num_of_receive_messages]
+		num_of_receive_messages++
+
+		return result
 	}
 
 	String[] Web:urls() {
