@@ -291,8 +291,9 @@ component provides resource_catalog.ResourceCatalogManager requires io.Output ou
 		//CityResourceData lastDataFromResource = new CityResourceData()
 		//lastDataFromResource.resourceData = codifier.decode(rows[0].fields[1].value)
 		//byte storeContent[] = lastDataFromResource.resourceData
-		uuid = rows[0].fields[0].value
-		out.println("........getting data (uuid) stored on Resource Catalog Microservice: $(uuid)")
+
+		//uuid = rows[0].fields[0].value
+		//out.println("........getting data (uuid) stored on Resource Catalog Microservice: $(uuid)")
 
 		mysql.close()
 		//return lastDataFromResource

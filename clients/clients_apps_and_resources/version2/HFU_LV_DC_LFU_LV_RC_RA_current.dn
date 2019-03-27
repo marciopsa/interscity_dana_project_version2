@@ -61,6 +61,7 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 		TextFile file[] = new TextFile[1]
 		char data_collector_requestURL[] = new char[]("http://", SERVER_ADDRESS, ":2020//collector/datafromresource/", uuid)
 		char resource_catalog_requestURL[] = new char[]("http://", SERVER_ADDRESS, ":2019//catalog/capabilities/)", capability_value)
+		//char resource_adaptor_requestURL[] = new char[]("http://", SERVER_ADDRESS, ":2018//adaptor/resources/",uuid,"data", )
 		char updateURL[] = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources/", uuid, "/data")
 
 		for (int i = 0; i < 1; i++) {
@@ -72,6 +73,7 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 			for (int i = 0; i < NUM_OF_SEQUENCIAL_QUERY_REQUESTS; i++) {
 				triggerRequests(file[0], data_collector_requestURL)
 				HTTPResponse response = request.get(resource_catalog_requestURL, null)
+				request.post(updateURL, null, payload)
 			}
 
 			request.post(updateURL, null, payload)
@@ -98,7 +100,8 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 		"}")
 		char url[] = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources")
 		HTTPResponse response = request.post(url, null, jsonBus)
-		InterscityMsg formatedResponse = encoder.jsonToData(response.content, typeof(InterscityMsg), null)
+		//InterscityMsg formatedResponse = encoder.jsonToData(response.content, typeof(InterscityMsg), null)
+		//out.println("formatedResponse.uuid: $(formatedResponse.uuid)")
 
 		/* --------------ADDING DATA--------------*/
 		out.println("$(debugMSG)  Adding data to the database...")
@@ -119,8 +122,13 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 				"]",
 			"}",
 		"}")
-		url = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources/$(formatedResponse.uuid)/data")
-		response = request.post(url, null, jsonBus_DataToBeSent)
+		//url = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources/$(formatedResponse.uuid)/data")
+		url = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources/1/data")
+
+		for (int i = 0; i < 10; i++) {
+			response = request.post(url, null, jsonBus_DataToBeSent)
+		}
+
 		if((response.headers[0].value) == "HTTP/1.1 200 OK") { out.println("$(debugMSG) Data sent successfully!") }
 
 		out.println("Press enter to start triggering requests...")
@@ -130,7 +138,8 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 
 		/* --------------TRIGGERING REQUESTS-------------- */
 		out.println(new char[]("$(debugMSG) Starting requests... "))
-		Thread startThread = asynch::start(jsonBus_DataToBeSent, formatedResponse.uuid, "buslocation")
+		//Thread startThread = asynch::start(jsonBus_DataToBeSent, formatedResponse.uuid, "buslocation")
+		Thread startThread = asynch::start(jsonBus_DataToBeSent, "1", "buslocation")
 		out.println("Press enter to finish...")
 		in.readln()
 		flag = false

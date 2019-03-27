@@ -9,7 +9,7 @@ const char debugMSG[] = "[@NFRPGroupingMessages]"
 component provides ws.Web requires io.Output out, ws.Web:nfrp web {
 	const int MAX_NUM_OF_RECEIVED_MESSAGES_ALLOWED = 10
 
-	byte accumulatedMessages_response[10]
+	byte accumulatedMessages_response[]
 
 	int num_of_received_messages = 0
 

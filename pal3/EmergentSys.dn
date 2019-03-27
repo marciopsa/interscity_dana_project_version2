@@ -31,7 +31,7 @@ const char BADREQUEST_STATUS[] 	= "400 Bad Request"
 const char NOTFOUND_STATUS[] 	= "404 Not Found"
 
 /* emergent sys port */
-const int PORT = 2040//2011
+const int PORT = 2051//2011
 
 /* registry server info */
 const char REGISTRY_IP[] = "scc-mc1.lancs.ac.uk"
@@ -163,7 +163,7 @@ component provides App requires io.Output out, data.IntUtil iu, monitoring.Perce
 				params[0] = new AppParam()
 				params[0].string = "-p"
 				params[1] = new AppParam()
-				params[1].string = "2019"
+				params[1].string = "2018"
 				perception.setMain(cmdList[1].string, params)
 				return new String[](new String(OK_STATUS))
 			} else { out.println("$(debugMSG) Invalid command.") }

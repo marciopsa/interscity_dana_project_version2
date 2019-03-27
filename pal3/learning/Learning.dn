@@ -11,7 +11,7 @@ const int TRESHOLD 				= 3
 const int COLLECTION_TIME 		= 5000
 /* system info */
 const char IP[]  				= "localhost" // emergent system
-const int PORT 					= 2050
+const int PORT 					= 2051
 /* learning stages */
 const char EXIT[] 				= "exit"
 const char STARTEXPLORING[] 	= "start_exploring"
