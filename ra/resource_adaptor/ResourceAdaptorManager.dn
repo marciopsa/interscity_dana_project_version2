@@ -47,9 +47,9 @@ data InterSCityData {
 component provides ResourceAdaptorManager requires net.http.HTTPRequest request, io.Output out, data.StringUtil strUtil,
 								data.IntUtil intUtil, data.json.JSONEncoder encoder, data.adt.HashTable {
 
-	HashTable resourceMetaData_hashtable = new HashTable()
+	//HashTable resourceMetaData_hashtable = new HashTable()
 
-	int local_id_usedOnResourceAdaptor = 1  // Local ID used on Resource Adaptor.
+	//int local_id_usedOnResourceAdaptor = 1  // Local ID used on Resource Adaptor.
 
 	void ResourceAdaptorManager:sendData(byte content[], char id[], DocStream docStream) {
 		char url[] = "http://localhost:2020/collector/data/$(id)"
@@ -65,11 +65,11 @@ component provides ResourceAdaptorManager requires net.http.HTTPRequest request,
 		InterSCityData bus = encoder.jsonToData(content, typeof(InterSCityData), map)
 
 		//Storing metadata on the local database of the Resource Adaptor Microservice.
-		int created_local_id = storeResourceMetaData(bus)
-		out.println("ID stored on Resource Adaptor Microservice: $(intUtil.intToString(created_local_id))")
+		/* int created_local_id = storeResourceMetaData(bus)
+		out.println("ID stored on Resource Adaptor Microservice: $(intUtil.intToString(created_local_id))") */
 
 		// Sending metadata on Resource Catalog
-		out.println("Sending metadata on Resource Catalog...")
+		out.println("Sending metadata to Resource Catalog...")
 		char url[] = "http://localhost:2019/catalog/resources"
 		Header headers[] = null
 		HTTPResponse response = request.post(url, null, content)
@@ -107,7 +107,7 @@ component provides ResourceAdaptorManager requires net.http.HTTPRequest request,
 		s.write(encoder.jsonFromData(r, null))
 	}
 
-	int storeResourceMetaData(InterSCityData resourceMetatData) {
+	/* int storeResourceMetaData(InterSCityData resourceMetatData) {
 		int key = local_id_usedOnResourceAdaptor
 		resourceMetaData_hashtable.put(key, resourceMetatData)
 		InterSCityData stored_dJ = resourceMetaData_hashtable.get(key)
@@ -115,6 +115,6 @@ component provides ResourceAdaptorManager requires net.http.HTTPRequest request,
 		local_id_usedOnResourceAdaptor++
 
 		return key
-	}
+	} */
 
 }

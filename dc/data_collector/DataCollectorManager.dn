@@ -18,8 +18,10 @@ component provides data_collector.DataCollectorManager requires io.Output out,
 
 	void DataCollectorManager:storeData(byte content[], char id[], DocStream s) {
 
+		out.println("Inside storeData, id sent: $(id)")
 		//if (number_of_records < 200) {
 		if (number_of_records < 1) {
+			out.println("Inside storeData2222, id sent: $(id)")
 			MySQL mysql = new MySQL("localhost", 0, "root", "root", "data_collector")
 			mysql.execute(new char[]("INSERT INTO data (value, uuid) VALUES (\"", codifier.encode(content)
 				,"\", \"", id ,"\");"))
