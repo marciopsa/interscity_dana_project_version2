@@ -59,12 +59,13 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 		//file.writeLine(new char[](formatTimeStamp(dt2), " ", iu.intToString(result)))
 	}
 
-	void start(char payload[], char uuid[], char capability_value[]) {
+	void start(char payload1[], char payload2[], char uuid1[], char uuid2[], char capability_value[]) {
 		TextFile file[] = new TextFile[1]
-		char data_collector_requestURL[] = new char[]("http://", SERVER_ADDRESS, ":2020//collector/datafromresource/", uuid)
+		char data_collector_requestURL[] = new char[]("http://", SERVER_ADDRESS, ":2020//collector/datafromresource/", uuid1)
 		char resource_catalog_requestURL[] = new char[]("http://", SERVER_ADDRESS, ":2019//catalog/capabilities/)", capability_value)
 		//char resource_adaptor_requestURL[] = new char[]("http://", SERVER_ADDRESS, ":2018//adaptor/resources/",uuid,"data", )
-		char updateURL[] = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources/", uuid, "/data")
+		char updateURL[] = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources/", uuid1, "/data")
+		char updateURL2[] = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources/", uuid2, "/data")
 
 		/* for (int i = 0; i < 1; i++) {
 			//file[i] = new TextFile(new char[]("HFU_LV_DC_LFU_LV_RC_RESULTS/request-file-burst-", iu.intToString(i+1), ".data"),
@@ -75,10 +76,10 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 			for (int i = 0; i < NUM_OF_SEQUENCIAL_QUERY_REQUESTS; i++) {
 				triggerRequests(file[0], data_collector_requestURL)
 				HTTPResponse response = request.get(resource_catalog_requestURL, null)
-				request.post(updateURL, null, payload)
+				request.post(updateURL, null, payload2)
 			}
 
-			request.post(updateURL, null, payload)
+			request.post(updateURL, null, payload1)
 			timer.sleep(SLEEP_INTERVAL)
 		}
 		/* for (int i = 0; i < 1; i++) {
@@ -92,9 +93,9 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 
 /* ================================================================================================= */
 	int App:main(AppParam params[]) {
-		/* --------------REGISTERING RESOURCE-------------- */
+		/* --------------REGISTERING RESOURCE 1-------------- */
 		out.println("$(debugMSG) Client started...")
-		out.println("$(debugMSG) Registering resource...")
+		out.println("$(debugMSG) Registering resource 1...")
 		// registering resource: bus ...
 		char jsonBus[] = new char[]("{",
 			"\"data\": {",
@@ -107,11 +108,49 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 		"}")
 		char url[] = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources")
 		HTTPResponse response = request.post(url, null, jsonBus)
-		InterscityMsg formatedResponse = encoder.jsonToData(response.content, typeof(InterscityMsg), null)
-		out.println("formatedResponse.uuid: $(formatedResponse.uuid)")
+		InterscityMsg formatedResponse_resource1 = encoder.jsonToData(response.content, typeof(InterscityMsg), null)
+		out.println("formatedResponse.uuid: $(formatedResponse_resource1.uuid)")
+
+		/* -------------- REGISTERING RESOURCE 2 -------------- */
+		out.println("$(debugMSG) Client started...")
+		out.println("$(debugMSG) Registering resource 2...")
+		// registering resource: bus ...
+		char jsonTrafficLightControl[] = new char[]("{",
+			"\"data\": {",
+				"\"description\": \"traffic light control\",",
+				"\"capabilities\": [\"number_of_vehicles\", \"number_of_people\", \"speed_detection\"],",
+				"\"status\": \"active\",",
+				"\"lat\": -23.5584615,",
+				"\"lon\": -46.6543521",
+			"}",
+		"}")
+		char url2[] = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources")
+		HTTPResponse response2 = request.post(url2, null, jsonTrafficLightControl)
+		InterscityMsg formatedResponse_resource2 = encoder.jsonToData(response2.content, typeof(InterscityMsg), null)
+		out.println("formatedResponse.uuid: $(formatedResponse_resource2.uuid)")
 
 		/* --------------ADDING DATA--------------*/
-		out.println("$(debugMSG)  Adding data to the database...")
+		out.println("$(debugMSG)  Adding data to the database (resource 1)...")
+		// adding one location to the database...
+		char jsonTrafficLightControl_DataToBeSent[] = new char[]("{",
+		"\"data\": {",
+				"\"public_bus\": [",
+					"{",
+						"\"location\": {",
+							"\"lat\": -10.00032,",
+							"\"lon\": -23.559615",
+							"},",
+						"\"speed\": 54,",
+						"\"uuid\": 1,",//$(formatedResponse.uuid),",
+						"\"bus_line\": \"875c-10-1\",",
+						"\"timestamp\": \"2017-06-14T17:52:25.428Z\"",
+					"}",
+				"]",
+			"}",
+		"}")
+		//url = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources/$(formatedResponse.uuid)/data")
+
+		out.println("$(debugMSG)  Adding data to the database (resource 2)...")
 		// adding one location to the database...
 		char jsonBus_DataToBeSent[] = new char[]("{",
 		"\"data\": {",
@@ -122,14 +161,14 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 							"\"lon\": -23.559615",
 							"},",
 						"\"speed\": 54,",
-						"\"uuid\": 0,",//$(formatedResponse.uuid),",
+						"\"uuid\": 1,",//$(formatedResponse.uuid),",
 						"\"bus_line\": \"875c-10-1\",",
 						"\"timestamp\": \"2017-06-14T17:52:25.428Z\"",
 					"}",
 				"]",
 			"}",
 		"}")
-		//url = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources/$(formatedResponse.uuid)/data")
+
 
 		char id[] = "1"
 		//url = new char[]("http://", SERVER_ADDRESS, ":2018/adaptor/resources/$(id)/data")
@@ -148,7 +187,8 @@ component provides App requires io.Output out, data.IntUtil iu, time.Timer timer
 
 		/* --------------TRIGGERING REQUESTS-------------- */
 	  out.println(new char[]("$(debugMSG) Starting requests... "))
-		Thread startThread = asynch::start(jsonBus_DataToBeSent, formatedResponse.uuid, "buslocation")
+		Thread startThread = asynch::start(jsonBus_DataToBeSent, jsonTrafficLightControl_DataToBeSent,
+			formatedResponse_resource1.uuid, formatedResponse_resource2.uuid, "buslocation")
 		//Thread startThread = asynch::start(jsonBus_DataToBeSent, "1", "buslocation")
 		out.println("Press enter to finish...")
 		in.readln()
